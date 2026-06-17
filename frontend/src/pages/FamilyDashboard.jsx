@@ -19,6 +19,7 @@ const FamilyDashboard = () => {
   const [serviceRecords, setServiceRecords] = useState([]);
   const [demands, setDemands] = useState([]);
   const [loading, setLoading] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
   const [bindModalVisible, setBindModalVisible] = useState(false);
   const [orderModalVisible, setOrderModalVisible] = useState(false);
@@ -264,7 +265,7 @@ const FamilyDashboard = () => {
                 title: '操作',
                 key: 'action',
                 render: (_, record) => (
-                  record.status === 'pending' ? (
+                  record.status === 'pending' && record.requester_id === currentUser.id ? (
                     <Button
                       type="primary"
                       danger
