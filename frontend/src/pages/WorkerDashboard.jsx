@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Table, Button, Modal, Form, Input, InputNumber, Select, Tag, Space, message, Card, Descriptions
 } from 'antd';
-import { CheckOutlined, FileTextOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { CheckOutlined, FileTextOutlined, ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons';
 import api from '../api';
 
 const { TextArea } = Input;
@@ -151,8 +151,22 @@ const WorkerDashboard = () => {
           type={activeTab === 'my-orders' ? 'primary' : 'default'}
           icon={<FileTextOutlined />}
           onClick={() => setActiveTab('my-orders')}
+          style={{ marginRight: 8 }}
         >
           我的订单
+        </Button>
+        <Button
+          icon={<ReloadOutlined />}
+          onClick={() => {
+            if (activeTab === 'pending') {
+              fetchPendingOrders();
+            } else {
+              fetchMyOrders();
+            }
+            message.success('刷新成功');
+          }}
+        >
+          刷新
         </Button>
       </div>
 

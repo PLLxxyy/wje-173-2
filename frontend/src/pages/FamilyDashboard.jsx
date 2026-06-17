@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Table, Button, Modal, Form, Input, Select, DatePicker, Tag, Space, message, Card, Row, Col, List, Descriptions
 } from 'antd';
-import { PlusOutlined, LinkOutlined, CalendarOutlined, FileTextOutlined, HeartOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { PlusOutlined, LinkOutlined, CalendarOutlined, FileTextOutlined, HeartOutlined, ShoppingOutlined, CloseOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import api from '../api';
 
@@ -151,6 +151,25 @@ const FamilyDashboard = () => {
     }
   };
 
+  const handleCancelOrder = (orderId) => {
+    Modal.confirm({
+      title: '确认取消',
+      content: '确定要取消此预约吗？',
+      okText: '确认取消',
+      okType: 'danger',
+      cancelText: '返回',
+      onOk: async () => {
+        try {
+          await api.put(`/service-orders/${orderId}/cancel`);
+          message.success('取消成功');
+          fetchOrders();
+        } catch (err) {
+          message.error(err.response?.data?.error || '取消失败');
+        }
+      }
+    });
+  };
+
   const approvedElderly = bindings.filter(b => b.status === 'approved');
 
   const statusMap = {
@@ -240,7 +259,25 @@ const FamilyDashboard = () => {
                   return <Tag color={color}>{text}</Tag>;
                 }
               },
-              { title: '服务人员', dataIndex: 'worker_name', key: 'worker_name' }
+              { title: '服务人员', dataIndex: 'worker_name', key: 'worker_name' },
+              {
+                title: '操作',
+                key: 'action',
+                render: (_, record) => (
+                  record.status === 'pending' ? (
+                    <Button
+                      type="primary"
+                      danger
+                      icon={<CloseOutlined />}
+                      onClick={() => handleCancelOrder(record.id)}
+                    >
+                      取消预约
+                    </Button>
+                  ) : (
+                    <span>-</span>
+                  )
+                )
+              }
             ]}
             dataSource={orders}
             rowKey="id"

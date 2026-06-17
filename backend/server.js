@@ -297,6 +297,24 @@ app.put('/api/service-orders/:id/accept', authenticate, requireRole('worker'), a
   }
 });
 
+app.put('/api/service-orders/:id/cancel', authenticate, requireRole('family', 'admin'), async (req, res) => {
+  try {
+    const order = await dbGet(`SELECT * FROM service_orders WHERE id=? AND status='pending'`, [req.params.id]);
+    if (!order) return res.status(400).json({ error: '订单不可取消' });
+    if (req.user.role === 'family') {
+      const bindings = await dbAll(`SELECT elderly_id FROM family_bindings WHERE family_id = ? AND status = 'approved'`, [req.user.id]);
+      const elderlyIds = bindings.map(b => b.elderly_id);
+      if (!elderlyIds.includes(order.elderly_id)) {
+        return res.status(403).json({ error: '权限不足' });
+      }
+    }
+    await dbRun(`UPDATE service_orders SET status='cancelled' WHERE id=?`, [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: '取消订单失败' });
+  }
+});
+
 app.put('/api/service-orders/:id/complete', authenticate, requireRole('worker'), async (req, res) => {
   try {
     const { service_content, duration, elderly_feedback } = req.body;
