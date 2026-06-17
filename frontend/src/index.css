@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f0f2f5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.page-container {
+  padding: 24px;
+}
+
+.card-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card {
+  text-align: center;
+  padding: 24px;
+}
+
+.stat-card .stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1890ff;
+  margin-bottom: 8px;
+}
+
+.stat-card .stat-label {
+  color: #666;
+  font-size: 14px;
+}
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.tag-lonely {
+  background-color: #faad14;
+  color: white;
+}
+
+.filter-bar {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
